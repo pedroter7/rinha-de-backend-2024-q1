@@ -32,7 +32,7 @@ public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynam
         // Arrange
         using var conn = _enviroment.Connection;
         DynamicParameters p = _director.BuildWithRandomValues();
-        var stopWatch = Stopwatch.StartNew();
+        var timeCalled = DateTime.UtcNow;
 
         // Act
         var result = await QueryProcedure(conn, p);
@@ -41,7 +41,7 @@ public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynam
         Assert.Equal(1, GetOutCode(p));
         Assert.Null(GetOutCurrentBalance(p));
         Assert.Null(GetOutCurrentLimit(p));
-        Assert.True((DateTime.UtcNow - GetOutStatementTimeStamp(p).ToUniversalTime()).Milliseconds < stopWatch.ElapsedMilliseconds);
+        Assert.True((timeCalled - GetOutStatementTimeStamp(p).ToUniversalTime()).Milliseconds < AcceptableTimeDiffMs);
         Assert.Empty(result);
     }
 
@@ -67,7 +67,7 @@ public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynam
         Assert.Equal(0, GetOutCode(p));
         Assert.Equal(balance, GetOutCurrentBalance(p));
         Assert.Equal(accountId * x, GetOutCurrentLimit(p));
-        Assert.True((timeCalled - GetOutStatementTimeStamp(p).ToUniversalTime()).Milliseconds < 1000 * 60);
+        Assert.True((timeCalled - GetOutStatementTimeStamp(p).ToUniversalTime()).Milliseconds < AcceptableTimeDiffMs);
         Assert.Empty(result);
     }
 
