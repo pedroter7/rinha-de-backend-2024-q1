@@ -1,0 +1,21 @@
+name: publish-docker-images
+run-name: Publish images to DockerHub
+on:
+  push:
+    branches: [master]
+jobs:
+  publish_database_image:
+    name: Publish Database image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3.0.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build and publish to DockerHub
+        uses: docker/build-push-action@v5.1.0
+        with:
+          file: 'Database.Dockerfile'
+          push: true
+          tags: pedroter7/rinha-de-backend-2024-q1:db-latest
