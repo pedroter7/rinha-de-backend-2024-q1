@@ -6,6 +6,7 @@ using PedroTer7.Rinha2024Q1.Database.Tests.Fixtures;
 
 namespace PedroTer7.Rinha2024Q1.Database.Tests;
 
+[Collection("DatabaseTests")]
 public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynamicParametersDirector director,
     RandomValuesFixture fixture)
     : IAsyncLifetime, IClassFixture<GetAccountStatementProcedureDynamicParametersDirector>, IClassFixture<RandomValuesFixture>
