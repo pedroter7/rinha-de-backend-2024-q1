@@ -12,8 +12,10 @@ echo "--------------"
 echo "Running tests"
 echo "--------------"
 dotnet test -e DOCKER_DATABASE_TEST_IMAGE=${DOCKER_DATABASE_TEST_IMAGE} ./src/PedroTer7.Rinha2024Q1.Database.Tests $1
+tests_exit_code=$?
 echo "--------------"
 echo "Cleaning up"
 docker image rm --force ${DOCKER_DATABASE_TEST_IMAGE}
 echo "--------------"
 echo "Done"
+exit $tests_exit_code

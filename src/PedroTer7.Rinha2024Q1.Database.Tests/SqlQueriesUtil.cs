@@ -28,8 +28,7 @@ public static class SqlQueriesUtil
         StringBuilder stringBuilder = new("INSERT INTO account_transaction_log (account_id, `type`, amount, `description`, timestamp_utc) VALUES ");
         foreach (var i in Enumerable.Range(1, nLogs))
         {
-            stringBuilder.Append($"({accountId}, 99, 1, 'desc', '{DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm:ss")}'){(i == nLogs ? ";" : ", ")}");
-            Task.Delay(100).Wait();
+            stringBuilder.Append($"({accountId}, 99, 1, 'desc', '{DateTime.UtcNow.AddMinutes(i).ToString("yyyy-MM-dd hh:mm:ss")}'){(i == nLogs ? ";" : ", ")}");
         }
         return stringBuilder.ToString();
     }
