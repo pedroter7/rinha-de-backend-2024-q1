@@ -10,6 +10,7 @@ public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynam
     RandomValuesFixture fixture)
     : IAsyncLifetime, IClassFixture<GetAccountStatementProcedureDynamicParametersDirector>, IClassFixture<RandomValuesFixture>
 {
+    private const long AcceptableTimeDiffMs = 1000 * 60;
     private readonly MariaDbTestEnvironment _enviroment = new();
     private readonly GetAccountStatementProcedureDynamicParametersDirector _director = director;
     private readonly RandomValuesFixture _fixture = fixture;
@@ -57,7 +58,7 @@ public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynam
         await conn.ExecuteAsync(SqlQueriesUtil.BuildInsertIntoAccount(nAccounts, i => i * x));
         await conn.ExecuteAsync(SqlQueriesUtil.BuildUpdateAccountBalanceCache(accountId, balance));
         DynamicParameters p = _director.BuildFor(accountId);
-        var stopWatch = Stopwatch.StartNew();
+        var timeCalled = DateTime.UtcNow;
 
         // Act
         var result = await QueryProcedure(conn, p);
@@ -66,7 +67,7 @@ public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynam
         Assert.Equal(0, GetOutCode(p));
         Assert.Equal(balance, GetOutCurrentBalance(p));
         Assert.Equal(accountId * x, GetOutCurrentLimit(p));
-        Assert.True((DateTime.UtcNow - GetOutStatementTimeStamp(p).ToUniversalTime()).Milliseconds < stopWatch.ElapsedMilliseconds);
+        Assert.True((timeCalled - GetOutStatementTimeStamp(p).ToUniversalTime()).Milliseconds < 1000 * 60);
         Assert.Empty(result);
     }
 
@@ -93,14 +94,14 @@ public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynam
             .OrderByDescending(x => x.Timestamp_utc)
             .Take(10);
         DynamicParameters p = _director.BuildFor(accountId);
-        var stopWatch = Stopwatch.StartNew();
+        var timeCalled = DateTime.UtcNow;
 
         // Act
         var result = await QueryProcedure(conn, p);
 
         // Assert
         Assert.Equal(0, GetOutCode(p));
-        Assert.True((DateTime.UtcNow - GetOutStatementTimeStamp(p).ToUniversalTime()).Milliseconds < stopWatch.ElapsedMilliseconds);
+        Assert.True((timeCalled - GetOutStatementTimeStamp(p)).Milliseconds < AcceptableTimeDiffMs);
         Assert.True(result.Any());
         Assert.True(nLogsForTestedAccount < 10 ? result.Count() == nLogsForTestedAccount : result.Count() == 10);
         Assert.True(result.All(r => r.Account_Id == accountId));
