@@ -13,4 +13,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Run tests
-        run: 'ls'
+        run: |
+          'll'
+          'chmod +x test_database.sh'
+          'test_database.sh'
