@@ -1,0 +1,1 @@
+CREATE DATABASE rinha_2024_q1;
