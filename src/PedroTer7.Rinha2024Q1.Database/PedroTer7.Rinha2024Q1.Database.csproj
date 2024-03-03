@@ -10,4 +10,11 @@
     <Folder Include="Models/" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0-preview.1.24080.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.1.24080.9" />
+    <PackageReference Include="MySqlConnector.DependencyInjection" Version="2.3.5" />
+  </ItemGroup>
+
 </Project>

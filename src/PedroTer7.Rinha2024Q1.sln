@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PedroTer7.Rinha2024Q1.WebAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PedroTer7.Rinha2024Q1.WebApi.Tests", "PedroTer7.Rinha2024Q1.WebApi.Tests\PedroTer7.Rinha2024Q1.WebApi.Tests.csproj", "{2CD29A61-57B8-4F24-83E0-46DCA88A5A32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PedroTer7.Rinha2024Q1.Tests.Common", "PedroTer7.Rinha2024Q1.Tests.Common\PedroTer7.Rinha2024Q1.Tests.Common.csproj", "{3D7391E4-0BF9-47C7-A61A-679065D3FA10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2CD29A61-57B8-4F24-83E0-46DCA88A5A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CD29A61-57B8-4F24-83E0-46DCA88A5A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CD29A61-57B8-4F24-83E0-46DCA88A5A32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D7391E4-0BF9-47C7-A61A-679065D3FA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D7391E4-0BF9-47C7-A61A-679065D3FA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D7391E4-0BF9-47C7-A61A-679065D3FA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D7391E4-0BF9-47C7-A61A-679065D3FA10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

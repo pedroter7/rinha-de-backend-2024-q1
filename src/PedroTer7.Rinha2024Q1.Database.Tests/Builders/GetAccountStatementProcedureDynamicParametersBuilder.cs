@@ -14,7 +14,7 @@ public class GetAccountStatementProcedureDynamicParametersBuilder
     {
         var parameters = new DynamicParameters();
         parameters.Add("in_account_id", inAccountId);
-        parameters.Add("out_code", -1L, dbType: DbType.Int16, direction: ParameterDirection.Output);
+        parameters.Add("out_code", -1, dbType: DbType.Int16, direction: ParameterDirection.Output);
         parameters.Add("out_current_balance", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
         parameters.Add("out_current_limit", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
         parameters.Add("out_statement_timestamp", null, dbType: DbType.DateTime, direction: ParameterDirection.Output);

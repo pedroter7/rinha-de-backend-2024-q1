@@ -1,7 +1,7 @@
 ﻿using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 
-namespace PedroTer7.Rinha2024Q1.Database.Tests;
+namespace PedroTer7.Rinha2024Q1.Tests.Common.Enviroment;
 
 public class DelayContainerWaitStrategy(int delayMs) : IWaitUntil
 {

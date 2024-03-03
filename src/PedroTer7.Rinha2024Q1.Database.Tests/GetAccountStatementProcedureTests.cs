@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
-using PedroTer7.Rinha2024Q1.Database.Models;
+﻿using PedroTer7.Rinha2024Q1.Database.Models;
 using PedroTer7.Rinha2024Q1.Database.Tests.Builders;
-using PedroTer7.Rinha2024Q1.Database.Tests.Enviroment;
-using PedroTer7.Rinha2024Q1.Database.Tests.Fixtures;
+using PedroTer7.Rinha2024Q1.Tests.Common.Enviroment;
+using PedroTer7.Rinha2024Q1.Tests.Common.Fixtures;
 
 namespace PedroTer7.Rinha2024Q1.Database.Tests;
 
+[Collection("DatabaseTests")]
 public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynamicParametersDirector director,
     RandomValuesFixture fixture)
     : IAsyncLifetime, IClassFixture<GetAccountStatementProcedureDynamicParametersDirector>, IClassFixture<RandomValuesFixture>

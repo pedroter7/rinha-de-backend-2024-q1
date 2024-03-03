@@ -13,6 +13,7 @@ public interface IDataService
     /// <returns></returns>
     /// <exception cref="AccountNotFoundException"></exception>
     /// <exception cref="InvalidTransactionException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     Task<TransactionResultDto> RegisterTransactionForAccount(int accountId, TransactionDto transaction);
 
     /// <summary>

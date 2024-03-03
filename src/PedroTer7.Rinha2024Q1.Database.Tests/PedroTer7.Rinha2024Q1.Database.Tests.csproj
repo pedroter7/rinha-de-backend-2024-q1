@@ -10,11 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="35.4.0" />
     <PackageReference Include="Dapper" Version="2.1.28" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-    <PackageReference Include="MySqlConnector" Version="2.3.5" />
-    <PackageReference Include="Testcontainers" Version="3.7.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PedroTer7.Rinha2024Q1.Database\PedroTer7.Rinha2024Q1.Database.csproj" />
+    <ProjectReference Include="..\PedroTer7.Rinha2024Q1.Tests.Common\PedroTer7.Rinha2024Q1.Tests.Common.csproj" />
   </ItemGroup>
 
 </Project>
