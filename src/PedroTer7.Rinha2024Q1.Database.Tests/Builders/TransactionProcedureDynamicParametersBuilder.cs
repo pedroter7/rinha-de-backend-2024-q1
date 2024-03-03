@@ -1,7 +1,4 @@
-﻿using Dapper;
-using System.Data;
-
-namespace PedroTer7.Rinha2024Q1.Database.Tests.Builders;
+﻿namespace PedroTer7.Rinha2024Q1.Database.Tests.Builders;
 
 public class TransactionProcedureDynamicParametersBuilder
 {
@@ -41,7 +38,7 @@ public class TransactionProcedureDynamicParametersBuilder
         parameters.Add("in_account_id", inAccountId);
         parameters.Add("in_type", inType);
         parameters.Add("in_description", inDescription);
-        parameters.Add("out_code", -1L, dbType: DbType.Int16, direction: ParameterDirection.Output);
+        parameters.Add("out_code", -1, dbType: DbType.Int16, direction: ParameterDirection.Output);
         parameters.Add("out_balance", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
         parameters.Add("out_limit", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
 

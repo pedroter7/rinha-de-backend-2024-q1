@@ -1,4 +1,4 @@
-﻿using PedroTer7.Rinha2024Q1.Database.Tests.Fixtures;
+﻿using PedroTer7.Rinha2024Q1.Tests.Common.Fixtures;
 
 namespace PedroTer7.Rinha2024Q1.Database.Tests.Builders;
 

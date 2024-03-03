@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using PedroTer7.Rinha2024Q1.Database;
 using PedroTer7.Rinha2024Q1.WebApi;
 using PedroTer7.Rinha2024Q1.WebApi.Dtos;
 using PedroTer7.Rinha2024Q1.WebApi.Exceptions;
@@ -16,6 +17,7 @@ builder.Services
     .AddSwaggerGen()
     .AddFluentValidators()
     .AddMappingProfiles()
+    .RegisterDatabaseServices(builder.Configuration)
     .RegisterServices();
 
 var app = builder.Build();

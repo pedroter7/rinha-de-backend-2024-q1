@@ -13,4 +13,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PedroTer7.Rinha2024Q1.Database\PedroTer7.Rinha2024Q1.Database.csproj" />
+  </ItemGroup>
+
 </Project>

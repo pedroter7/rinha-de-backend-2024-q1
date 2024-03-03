@@ -1,7 +1,8 @@
 ﻿using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
+using MySqlConnector;
 
-namespace PedroTer7.Rinha2024Q1.Database.Tests.Enviroment;
+namespace PedroTer7.Rinha2024Q1.Tests.Common.Enviroment;
 
 public class MariaDbTestEnvironment
 {
