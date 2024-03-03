@@ -1,0 +1,3 @@
+[mariadb]
+port = 9996
+max_connections = 1024
