@@ -129,7 +129,7 @@ BEGIN
    	SELECT atl.*
    	FROM account_transaction_log atl
    	WHERE atl.account_id = in_account_id
-   	ORDER BY atl.timestamp_utc DESC
+   	ORDER BY atl.id DESC
    	LIMIT 10;
    	
    	SELECT 0, account_balance, account_limit
