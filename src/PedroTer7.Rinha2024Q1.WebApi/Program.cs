@@ -18,7 +18,11 @@ builder.Services
     .AddFluentValidators()
     .AddMappingProfiles()
     .RegisterDatabaseServices(builder.Configuration)
-    .RegisterServices();
+    .RegisterServices()
+    .ConfigureHttpJsonOptions(cfg =>
+    {
+        cfg.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.SnakeCaseLower;
+    });
 
 var app = builder.Build();
 

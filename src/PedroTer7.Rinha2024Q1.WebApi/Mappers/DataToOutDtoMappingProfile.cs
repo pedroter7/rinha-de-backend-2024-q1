@@ -13,6 +13,6 @@ public class DataToOutDtoMappingProfile : Profile
         CreateMap<AccountStatementDto, OutAccountStatement>()
             .ConstructUsing(d =>
                 new OutAccountStatement(new OutAccountStatementBalance(d.Balance, d.TimeStamp, d.Limit),
-                    d.Transactions.Select(o => new OutTransactionLog(o.Value, o.TransactionType, o.Description, o.Timestamp)) ?? new List<OutTransactionLog>()));
+                    d.Transactions.Select(o => new OutTransactionLog(Math.Abs(o.Value), o.TransactionType, o.Description, o.Timestamp)) ?? new List<OutTransactionLog>()));
     }
 }
