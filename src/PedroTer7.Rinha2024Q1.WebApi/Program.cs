@@ -73,7 +73,7 @@ app.Use(async (context, next) =>
     }
 });
 
-app.MapPost("/clientes/{id:int}/trasacoes", async (
+app.MapPost("/clientes/{id:int}/transacoes", async (
     [FromRoute(Name = "id")] int accountId,
     [FromBody] InTransaction transaction,
     [FromServices] IValidator<InTransaction> validator,
