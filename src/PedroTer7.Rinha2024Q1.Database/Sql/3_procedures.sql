@@ -38,9 +38,8 @@ BEGIN
 	DECLARE account_limit INT;
 	DECLARE new_balance INT;
 
-	IF in_type NOT IN (99, 100)
-		OR (in_type = 100 AND ((-1) * in_amount) < 0)
-		OR (in_type = 99 AND in_amount < 0)
+	IF NOT((in_type = 99 AND in_amount > 0)
+			OR (in_type = 100 AND in_amount < 0))
 	THEN
 		SET out_code = 3;
         LEAVE transaction_proc;
@@ -48,10 +47,10 @@ BEGIN
 
     START TRANSACTION;
 
-    SELECT ac.balance, a.`limit` 
+    SELECT a.balance, a.`limit` 
 	INTO current_balance, account_limit
-    FROM account_balance_cache ac, account a
-    WHERE a.id = in_account_id AND ac.account_id = a.id
+    FROM account a
+    WHERE a.id = in_account_id
     FOR UPDATE;
 
     IF current_balance IS NULL
@@ -75,9 +74,9 @@ BEGIN
 	VALUES
 	(in_account_id, in_type, in_amount, in_description);
 
-	UPDATE account_balance_cache
+	UPDATE account
 	SET balance = new_balance
-	WHERE account_id = in_account_id;
+	WHERE id = in_account_id;
 
 	SELECT 0, new_balance, account_limit INTO out_code, out_balance, out_limit;
     COMMIT;
@@ -115,10 +114,10 @@ BEGIN
 	DECLARE account_limit INT;
 	SET out_statement_timestamp = UTC_TIMESTAMP;
 
-	SELECT ac.balance, a.`limit` 
+	SELECT a.balance, a.`limit` 
 	INTO account_balance, account_limit
-    FROM account_balance_cache ac, account a
-    WHERE a.id = in_account_id AND ac.account_id = a.id;
+    FROM account a
+    WHERE a.id = in_account_id;
    	
    	IF account_balance IS NULL
 	THEN
