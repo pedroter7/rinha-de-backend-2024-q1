@@ -16,8 +16,11 @@ public class InTransactionValidator : AbstractValidator<InTransaction>
             .WithMessage("O tipo da transaçaõ precisa uma das opções: c para crédito; d para débito");
 
         RuleFor(t => t.Descricao)
+            .NotNull()
+            .WithMessage("A descrição é obrigatória")
             .MinimumLength(1)
+            .WithMessage("A descrição da transação precisa ter no mínimo 1 caractere")
             .MaximumLength(10)
-            .WithMessage("A descrição da transação precisa ter entre 1 e 10 caracteres");
+            .WithMessage("A descrição da transação precisa ter no máximo 10 caracters");
     }
 }
