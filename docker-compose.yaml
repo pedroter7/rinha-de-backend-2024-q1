@@ -2,40 +2,44 @@ version: "3.5"
 
 services:
   webapi01: &webapi
+    network_mode: "host"
     image: pedroter7/rinha-de-backend-2024-q1:webapi-latest
     hostname: webapi01
     environment:
-      - CUSTOMCONNSTR_MariaDbRead=Server=db;User Id=root;Password=pwd;Database=rinha_2024_q1
-      - CUSTOMCONNSTR_MariaDbWrite=Server=db;User Id=root;Password=pwd;Database=rinha_2024_q1
+      - CUSTOMCONNSTR_MariaDbRead=Server=127.0.0.1;Port=9996;User Id=root;Password=pwd;Database=rinha_2024_q1
+      - CUSTOMCONNSTR_MariaDbWrite=Server=127.0.0.1;Port=9996;User Id=root;Password=pwd;Database=rinha_2024_q1
+      - ASPNETCORE_HTTP_PORTS=9998
     depends_on:
       - db
     deploy:
       resources:
         limits:
           cpus: "0.4"
-          memory: "150MB"
+          memory: "125MB"
 
   webapi02:
+    network_mode: "host"
     <<: *webapi
     hostname: webapi02
     environment:
-      - CUSTOMCONNSTR_MariaDbRead=Server=db;User Id=root;Password=pwd;Database=rinha_2024_q1
-      - CUSTOMCONNSTR_MariaDbWrite=Server=db;User Id=root;Password=pwd;Database=rinha_2024_q1
+      - CUSTOMCONNSTR_MariaDbRead=Server=127.0.0.1;Port=9996;User Id=root;Password=pwd;Database=rinha_2024_q1
+      - CUSTOMCONNSTR_MariaDbWrite=Server=127.0.0.1;Port=9996;User Id=root;Password=pwd;Database=rinha_2024_q1
+      - ASPNETCORE_HTTP_PORTS=9997
 
   loadbalancer:
+    network_mode: "host"
     image: pedroter7/rinha-de-backend-2024-q1:loadbalancer-latest
     depends_on:
       - webapi01
       - webapi02
-    ports:
-      - "9999:80"
     deploy:
       resources:
         limits:
           cpus: "0.2"
-          memory: "50MB"
+          memory: "30MB"
 
   db:
+    network_mode: "host"
     image: pedroter7/rinha-de-backend-2024-q1:db-latest
     hostname: db
     environment:
@@ -44,9 +48,4 @@ services:
       resources:
         limits:
           cpus: "0.5"
-          memory: "200MB"
-
-networks:
-  default:
-    driver: bridge
-    name: rinha-2024-q1
+          memory: "270MB"
