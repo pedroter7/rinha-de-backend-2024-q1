@@ -9,11 +9,11 @@ using PedroTer7.Rinha2024Q1.Database.Services;
 
 namespace PedroTer7.Rinha2024Q1.Database;
 
-internal class DataAccessService([FromKeyedServices("read")] MySqlConnection readConnection,
-    [FromKeyedServices("write")] MySqlConnection writeConnection) : IDataAccessService
+internal class DataAccessService([FromKeyedServices("read")] MySqlDataSource readDataSource,
+    [FromKeyedServices("write")] MySqlDataSource writeDataSource) : IDataAccessService
 {
-    private readonly MySqlConnection _readConnection = readConnection;
-    private readonly MySqlConnection _writeConnection = writeConnection;
+    private readonly MySqlDataSource _readDataSource = readDataSource;
+    private readonly MySqlDataSource _writeDataSource = writeDataSource;
 
     public async Task<GetAccountStatementProcedureResultDto> CallGetAccountStatementProcedure(int accountId)
     {
@@ -24,7 +24,8 @@ internal class DataAccessService([FromKeyedServices("read")] MySqlConnection rea
         p.Add("out_current_limit", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
         p.Add("out_statement_timestamp", null, dbType: DbType.DateTime, direction: ParameterDirection.Output);
 
-        var queryResult = await _readConnection.QueryAsync<AccountTransactionLogModel>("get_account_statement", p, commandType: CommandType.StoredProcedure);
+        using var conn = await _readDataSource.OpenConnectionAsync();
+        var queryResult = await conn.QueryAsync<AccountTransactionLogModel>("get_account_statement", p, commandType: CommandType.StoredProcedure);
         var outCode = p.Get<short>("out_code");
         var balance = p.Get<int?>("out_current_balance") ?? 0;
         var limit = p.Get<int?>("out_current_limit") ?? 0;
@@ -43,7 +44,8 @@ internal class DataAccessService([FromKeyedServices("read")] MySqlConnection rea
         p.Add("out_balance", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
         p.Add("out_limit", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-        await _writeConnection.ExecuteAsync("transaction", p, commandType: CommandType.StoredProcedure);
+        using var conn = await _writeDataSource.OpenConnectionAsync();
+        await conn.ExecuteAsync("transaction", p, commandType: CommandType.StoredProcedure);
         var outCode = p.Get<short>("out_code");
         var balance = p.Get<int?>("out_balance") ?? 0;
         var limit = p.Get<int?>("out_limit") ?? 0;
