@@ -9,11 +9,9 @@ using PedroTer7.Rinha2024Q1.Database.Services;
 
 namespace PedroTer7.Rinha2024Q1.Database;
 
-internal class DataAccessService([FromKeyedServices("read")] MySqlDataSource readDataSource,
-    [FromKeyedServices("write")] MySqlDataSource writeDataSource) : IDataAccessService
+internal class DataAccessService(MySqlDataSource dataSource) : IDataAccessService
 {
-    private readonly MySqlDataSource _readDataSource = readDataSource;
-    private readonly MySqlDataSource _writeDataSource = writeDataSource;
+    private readonly MySqlDataSource _dataSource = dataSource;
 
     public async Task<GetAccountStatementProcedureResultDto> CallGetAccountStatementProcedure(int accountId)
     {
@@ -24,7 +22,7 @@ internal class DataAccessService([FromKeyedServices("read")] MySqlDataSource rea
         p.Add("out_current_limit", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
         p.Add("out_statement_timestamp", null, dbType: DbType.DateTime, direction: ParameterDirection.Output);
 
-        using var conn = await _readDataSource.OpenConnectionAsync();
+        using var conn = await _dataSource.OpenConnectionAsync();
         var queryResult = await conn.QueryAsync<AccountTransactionLogModel>("get_account_statement", p, commandType: CommandType.StoredProcedure);
         var outCode = p.Get<short>("out_code");
         var balance = p.Get<int?>("out_current_balance") ?? 0;
@@ -44,7 +42,7 @@ internal class DataAccessService([FromKeyedServices("read")] MySqlDataSource rea
         p.Add("out_balance", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
         p.Add("out_limit", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-        using var conn = await _writeDataSource.OpenConnectionAsync();
+        using var conn = await _dataSource.OpenConnectionAsync();
         await conn.ExecuteAsync("transaction", p, commandType: CommandType.StoredProcedure);
         var outCode = p.Get<short>("out_code");
         var balance = p.Get<int?>("out_balance") ?? 0;

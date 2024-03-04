@@ -7,6 +7,6 @@ public static class IServiceCollectionExtensions
 {
     public static IServiceCollection AddFluentValidators(this IServiceCollection services)
     {
-        return services.AddScoped<IValidator<InTransaction>, InTransactionValidator>();
+        return services.AddSingleton<IValidator<InTransaction>, InTransactionValidator>();
     }
 }
