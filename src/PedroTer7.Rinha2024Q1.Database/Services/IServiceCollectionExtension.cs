@@ -9,12 +9,10 @@ public static class IServiceCollectionExtension
 {
     public static IServiceCollection RegisterDatabaseServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var readConnString = configuration.GetConnectionString("MariaDbRead") ?? throw new Exception("mariadb-read connection string not found");
-        var writeConnString = configuration.GetConnectionString("MariaDbWrite") ?? throw new Exception("mariadb-write connection string not found");
+        var connectionString = configuration.GetConnectionString("MariaDbRinha") ?? throw new Exception("MariaDbRinha connection string not found");
 
         return services
-            .AddKeyedMySqlDataSource("read", readConnString)
-            .AddKeyedMySqlDataSource("write", writeConnString)
+            .AddMySqlDataSource(connectionString)
             .AddScoped<IDataAccessService, DataAccessService>();
     }
 }
