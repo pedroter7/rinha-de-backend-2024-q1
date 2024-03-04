@@ -121,7 +121,7 @@ public class TransactionProcedureTests(TransactionProcedureDynamicParametersDire
         var transactionAmount = _fixture.RandomTransactionPositiveAmount;
         var initialBalance = _fixture.RandomInt(0, 10000);
         await conn.ExecuteAsync(InsertTestAccountsSqlQuery);
-        await conn.ExecuteAsync(SqlQueriesUtil.BuildUpdateAccountBalanceCache(accountId, initialBalance));
+        await conn.ExecuteAsync(SqlQueriesUtil.BuildUpdateAccountBalance(accountId, initialBalance));
         var p = _director.BuildWithValidRandomValuesFor(accountId, 'c', transactionAmount);
         var (countQuery, negatedCountQuery) = BuildCountTransactionLogsSqlQueries(accountId, GetInDescription(p), op, transactionAmount);
 
@@ -148,7 +148,7 @@ public class TransactionProcedureTests(TransactionProcedureDynamicParametersDire
         var transactionAmount = _fixture.RandomTransactionNegativeAmount;
         var initialBalance = _fixture.RandomInt((-1) * transactionAmount, (-1) * transactionAmount + 1000);
         await conn.ExecuteAsync(InsertTestAccountsSqlQuery);
-        await conn.ExecuteAsync(SqlQueriesUtil.BuildUpdateAccountBalanceCache(accountId, initialBalance));
+        await conn.ExecuteAsync(SqlQueriesUtil.BuildUpdateAccountBalance(accountId, initialBalance));
         var p = _director.BuildWithValidRandomValuesFor(accountId, 'd', transactionAmount);
         var (countQuery, negatedCountQuery) = BuildCountTransactionLogsSqlQueries(accountId, GetInDescription(p), op, transactionAmount);
 

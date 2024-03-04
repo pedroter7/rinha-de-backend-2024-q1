@@ -56,7 +56,7 @@ public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynam
         int accountId = _fixture.RandomInt(1, nAccounts);
         int x = _fixture.RandomInt(1, 1000);
         await conn.ExecuteAsync(SqlQueriesUtil.BuildInsertIntoAccount(nAccounts, i => i * x));
-        await conn.ExecuteAsync(SqlQueriesUtil.BuildUpdateAccountBalanceCache(accountId, balance));
+        await conn.ExecuteAsync(SqlQueriesUtil.BuildUpdateAccountBalance(accountId, balance));
         DynamicParameters p = _director.BuildFor(accountId);
         var timeCalled = DateTime.UtcNow;
 
@@ -82,7 +82,7 @@ public class GetAccountStatementProcedureTests(GetAccountStatementProcedureDynam
         int nLogsForTestedAccount = _fixture.RandomInt(1, 15);
         int x = _fixture.RandomInt(1, 1000);
         await conn.ExecuteAsync(SqlQueriesUtil.BuildInsertIntoAccount(nAccounts, i => i * x));
-        await conn.ExecuteAsync(SqlQueriesUtil.BuildUpdateAccountBalanceCache(accountId, _fixture.RandomPositiveBalance));
+        await conn.ExecuteAsync(SqlQueriesUtil.BuildUpdateAccountBalance(accountId, _fixture.RandomPositiveBalance));
         foreach (var id in Enumerable.Range(1, nAccounts))
         {
             var logsN = id == accountId ? nLogsForTestedAccount : _fixture.RandomInt(1, 15);

@@ -18,9 +18,9 @@ public static class SqlQueriesUtil
         return stringBuilder.ToString();
     }
 
-    public static string BuildUpdateAccountBalanceCache(int accountId, int newBalanceValue)
+    public static string BuildUpdateAccountBalance(int accountId, int newBalanceValue)
     {
-        return $"UPDATE account_balance_cache SET balance = {newBalanceValue} WHERE account_id = {accountId};";
+        return $"UPDATE account SET balance = {newBalanceValue} WHERE id = {accountId};";
     }
 
     public static string BuildInsertIntoTransactionLogs(int accountId, int nLogs)
