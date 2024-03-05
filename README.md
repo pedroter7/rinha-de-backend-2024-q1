@@ -49,3 +49,5 @@ The whole solution can be run by using the Docker Compose file in the repo root.
 ## Conclusions after load tests
 
 While reliable and fast, the concurrency control strategy employed in this solution tends to perform poorly when concurrency to write to a single resource is high. Given that, this pessimistic approach can be more suitable to applications where the probability of concurrency for a single resource is small, high latency for write requests is torelable, or the write rate is lower than the read rate. The good thing is that this strategy is easier to implement and verify than an optimistic one.
+
+The load tests were performed using Gatling and [this]([https://github.com/zanfranceschi/rinha-de-backend-2024-q1/tree/main/load-test/user-files/simulations/rinhabackend](https://github.com/zanfranceschi/rinha-de-backend-2024-q1/blob/main/load-test/user-files/simulations/rinhabackend/RinhaBackendCrebitosSimulation.scala)https://github.com/zanfranceschi/rinha-de-backend-2024-q1/blob/main/load-test/user-files/simulations/rinhabackend/RinhaBackendCrebitosSimulation.scala) simulation.
