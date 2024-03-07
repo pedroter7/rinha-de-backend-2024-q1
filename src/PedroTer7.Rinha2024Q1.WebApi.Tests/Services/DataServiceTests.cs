@@ -8,7 +8,6 @@ using PedroTer7.Rinha2024Q1.Tests.Common.Fixtures;
 using PedroTer7.Rinha2024Q1.WebApi.Exceptions;
 using PedroTer7.Rinha2024Q1.WebApi.Services;
 using PedroTer7.Rinha2024Q1.WebApi.Dtos;
-using AutoMapper;
 
 namespace PedroTer7.Rinha2024Q1.WebApi.Tests;
 
@@ -37,7 +36,7 @@ public class DataServiceTests : IClassFixture<RandomValuesFixture>, IClassFixtur
             .Setup(x => x.CallGetAccountStatementProcedure(It.IsAny<int>()))
             .Returns(Task.FromResult(new GetAccountStatementProcedureResultDto(DataBaseProcedureResultCodeEnum.INVALID_ACCOUNT, 0, 0, DateTime.UtcNow, [])));
 
-        var service = new DataService(dataAccessServiceMock.Object, _autoFixture.Create<IMapper>());
+        var service = new DataService(dataAccessServiceMock.Object);
 
         // Act
         // Assert
@@ -53,9 +52,9 @@ public class DataServiceTests : IClassFixture<RandomValuesFixture>, IClassFixtur
         var balance = _randomValuesFixture.RandomPositiveBalance;
         var limit = _randomValuesFixture.RandomValidLimit;
         var timestamp = _randomValuesFixture.RandomPastUtcTime;
-        var transactionsHistory = _dtosFixture.GetRandomTransactionLogModels(_randomValuesFixture.RandomInt(0, 10), accountId);
+        var transactionsHistory = _dtosFixture.GetRandomTransactionLogModels(_randomValuesFixture.RandomInt(1, 10), accountId);
         var transactionHistoryExpectedResult = transactionsHistory
-            .Select(t => new TransactionLogDto(t.Amount, t.Type.ToString(), t.Description, t.Timestamp_utc))
+            .Select(t => new TransactionLogDto(t.Amount, ((char)t.Type).ToString(), t.Description, t.Timestamp_utc))
             .ToList();
 
         var procedureResultDto = new GetAccountStatementProcedureResultDto(DataBaseProcedureResultCodeEnum.SUCCESS, balance, limit, timestamp, transactionsHistory);
@@ -64,12 +63,7 @@ public class DataServiceTests : IClassFixture<RandomValuesFixture>, IClassFixtur
             .Setup(x => x.CallGetAccountStatementProcedure(It.IsAny<int>()))
             .Returns(Task.FromResult(procedureResultDto));
 
-        var mapperMock = _autoFixture.Freeze<Mock<IMapper>>();
-        mapperMock
-            .Setup(m => m.Map<AccountStatementDto>(It.Is<GetAccountStatementProcedureResultDto>(d => d.Equals(procedureResultDto))))
-            .Returns(new AccountStatementDto(balance, limit, timestamp, transactionHistoryExpectedResult));
-
-        var service = new DataService(dataAccessServiceMock.Object, mapperMock.Object);
+        var service = new DataService(dataAccessServiceMock.Object);
 
         // Act
         var resultStatement = await service.GetAccountStatement(accountId);
@@ -78,7 +72,7 @@ public class DataServiceTests : IClassFixture<RandomValuesFixture>, IClassFixtur
         Assert.Equal(balance, resultStatement.Balance);
         Assert.Equal(limit, resultStatement.Limit);
         Assert.Equal(timestamp, resultStatement.TimeStamp);
-        Assert.Equal(transactionHistoryExpectedResult, resultStatement.Transactions);
+        Assert.True(transactionHistoryExpectedResult.SequenceEqual(resultStatement.Transactions, new TransactionLogDtoEqualityComparer()));
         dataAccessServiceMock
             .Verify(s => s.CallTransactionProcedure(It.IsAny<int>(), It.IsAny<char>(), It.IsAny<int>(), It.IsAny<string>()), Times.Never);
         dataAccessServiceMock
@@ -99,7 +93,7 @@ public class DataServiceTests : IClassFixture<RandomValuesFixture>, IClassFixtur
             .Setup(x => x.CallTransactionProcedure(It.IsAny<int>(), It.IsAny<char>(), It.IsAny<int>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new TransactionProcedureResultDto(DataBaseProcedureResultCodeEnum.INVALID_ACCOUNT, 0, 0)));
 
-        var service = new DataService(dataAccessServiceMock.Object, _autoFixture.Create<IMapper>());
+        var service = new DataService(dataAccessServiceMock.Object);
 
         // Act
         // Assert
@@ -120,7 +114,7 @@ public class DataServiceTests : IClassFixture<RandomValuesFixture>, IClassFixtur
             .Setup(x => x.CallTransactionProcedure(It.IsAny<int>(), It.IsAny<char>(), It.IsAny<int>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new TransactionProcedureResultDto(DataBaseProcedureResultCodeEnum.INVALID_TRANSACTION, 0, 0)));
 
-        var service = new DataService(dataAccessServiceMock.Object, _autoFixture.Create<IMapper>());
+        var service = new DataService(dataAccessServiceMock.Object);
 
         // Act
         // Assert
@@ -141,7 +135,7 @@ public class DataServiceTests : IClassFixture<RandomValuesFixture>, IClassFixtur
             .Setup(x => x.CallTransactionProcedure(It.IsAny<int>(), It.IsAny<char>(), It.IsAny<int>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new TransactionProcedureResultDto(DataBaseProcedureResultCodeEnum.INVALID_OPERATION_ARGUMENTS, 0, 0)));
 
-        var service = new DataService(dataAccessServiceMock.Object, _autoFixture.Create<IMapper>());
+        var service = new DataService(dataAccessServiceMock.Object);
 
         // Act
         // Assert
@@ -168,12 +162,7 @@ public class DataServiceTests : IClassFixture<RandomValuesFixture>, IClassFixtur
             .Setup(x => x.CallTransactionProcedure(It.IsAny<int>(), It.IsAny<char>(), It.IsAny<int>(), It.IsAny<string>()))
             .Returns(Task.FromResult(procedureResultDto));
 
-        var mapperMock = _autoFixture.Freeze<Mock<IMapper>>();
-        mapperMock
-            .Setup(m => m.Map<TransactionResultDto>(It.Is<TransactionProcedureResultDto>(d => d.Equals(procedureResultDto))))
-            .Returns(expcetedTransactionResultDto);
-
-        var service = new DataService(dataAccessServiceMock.Object, mapperMock.Object);
+        var service = new DataService(dataAccessServiceMock.Object);
 
         // Act
         var result = await service.RegisterTransactionForAccount(accountId, transactionDto);
