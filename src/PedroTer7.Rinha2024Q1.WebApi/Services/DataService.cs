@@ -23,7 +23,11 @@ public class DataService(IDataAccessService dataAccessService, IMapper mapper) :
         return _mapper.Map<TransactionResultDto>(procedureResult);
     }
 
-    private static int GetSignedAmount(int amount, char transactionType) => transactionType == 'c' ? Math.Abs(amount) : Math.Abs(amount) * (-1);
+    private static int GetSignedAmount(int amount, char transactionType) => transactionType switch
+    {
+        'c' => Math.Abs(amount),
+        _ => -Math.Abs(amount),
+    };
 
     public async Task<AccountStatementDto> GetAccountStatement(int accountId)
     {
