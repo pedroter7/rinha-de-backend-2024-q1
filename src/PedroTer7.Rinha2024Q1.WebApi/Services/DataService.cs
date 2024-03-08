@@ -2,14 +2,15 @@
 using PedroTer7.Rinha2024Q1.WebApi.Dtos;
 using PedroTer7.Rinha2024Q1.WebApi.Exceptions;
 using PedroTer7.Rinha2024Q1.Database.Enums;
+using AutoMapper;
 using PedroTer7.Rinha2024Q1.Database.Dtos;
-using PedroTer7.Rinha2024Q1.WebApi.Mappers;
 
 namespace PedroTer7.Rinha2024Q1.WebApi.Services;
 
-public class DataService(IDataAccessService dataAccessService) : IDataService
+public class DataService(IDataAccessService dataAccessService, IMapper mapper) : IDataService
 {
     private readonly IDataAccessService _dataAccessService = dataAccessService;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<TransactionResultDto> RegisterTransactionForAccount(int accountId, TransactionDto transaction)
     {
@@ -19,7 +20,7 @@ public class DataService(IDataAccessService dataAccessService) : IDataService
 
         ThrowIfProcedureResultIsNotSuccess(procedureResult, accountId);
 
-        return procedureResult.ToTransactionResultDto();
+        return _mapper.Map<TransactionResultDto>(procedureResult);
     }
 
     private static int GetSignedAmount(int amount, char transactionType) => transactionType switch
@@ -34,7 +35,7 @@ public class DataService(IDataAccessService dataAccessService) : IDataService
 
         ThrowIfProcedureResultIsNotSuccess(procedureResult, accountId);
 
-        return procedureResult.ToAccountStatementDto();
+        return _mapper.Map<AccountStatementDto>(procedureResult);
     }
 
     private static void ThrowIfProcedureResultIsNotSuccess(DataBaseProcedureResultDto dataBaseProcedureResult, int accountId)

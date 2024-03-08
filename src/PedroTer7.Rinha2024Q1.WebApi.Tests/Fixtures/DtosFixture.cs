@@ -7,14 +7,13 @@ public class DtosFixture
 {
     private readonly RandomValuesFixture _randomValuesFixture = new();
 
-    public ICollection<AccountTransactionLogModel> GetRandomTransactionLogModels(int nLogs, int accountId)
+    public IEnumerable<AccountTransactionLogModel> GetRandomTransactionLogModels(int nLogs, int accountId)
     {
         int nextId = _randomValuesFixture.RandomInt(1, 100000);
-        List<AccountTransactionLogModel> col = new();
         foreach (var _ in Enumerable.Range(1, nLogs))
         {
             char type = (char)_randomValuesFixture.RandomInt(99, 100);
-            col.Add(new AccountTransactionLogModel
+            yield return new AccountTransactionLogModel
             {
                 Account_Id = accountId,
                 Amount = type == 'c' ? _randomValuesFixture.RandomTransactionPositiveAmount : _randomValuesFixture.RandomTransactionNegativeAmount,
@@ -22,9 +21,7 @@ public class DtosFixture
                 Id = nextId++,
                 Timestamp_utc = _randomValuesFixture.RandomPastUtcTime,
                 Type = (short)type
-            });
+            };
         }
-
-        return col;
     }
 }
