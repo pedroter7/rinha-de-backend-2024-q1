@@ -1,0 +1,13 @@
+http:
+  routers:
+    to-webapi:
+      rule: "PathPrefix(`/`)"
+      service: webapi
+      priority: 10000
+
+  services:
+    webapi:
+      loadbalancer:
+        servers:
+        - url: http://127.0.0.1:9998
+        - url: http://127.0.0.1:9997
