@@ -1,0 +1,11 @@
+entryPoints:
+  web:
+    address: ":9999"
+    http3: {}
+
+providers:
+  file:
+    filename: /etc/traefik/provider.yaml
+
+log:
+  level: "INFO"

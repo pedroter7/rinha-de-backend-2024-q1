@@ -1,2 +1,3 @@
-FROM haproxy:2.9
-COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
+FROM traefik:3.0
+COPY traefik.yaml /etc/traefik/traefik.yaml
+COPY traefik-provider.yaml /etc/traefik/provider.yaml
